@@ -17,12 +17,13 @@ const pool = mysql.createPool({
 async function query(text, params) {
   const start = Date.now();
   try {
-    const [rows] = await pool.execute(text, params);
+    // Use query() instead of execute() for better compatibility with MySQL
+    const [rows] = await pool.query(text, params);
     const duration = Date.now() - start;
     logger.debug('Executed query', { text, duration, rows: Array.isArray(rows) ? rows.length : 0 });
     return { rows };
   } catch (error) {
-    logger.error('Query error', { text, error: error.message });
+    logger.error('Query error', { text, params, error: error.message });
     throw error;
   }
 }
@@ -33,7 +34,7 @@ async function getClient() {
 
 async function checkConnection() {
   try {
-    await pool.execute('SELECT 1');
+    await pool.query('SELECT 1');
     return true;
   } catch (error) {
     logger.error('Database connection check failed', { error: error.message });
