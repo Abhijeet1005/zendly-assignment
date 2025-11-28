@@ -18,8 +18,8 @@ function validate(schema) {
     if (schema.query) toValidate.query = req.query;
     if (schema.params) toValidate.params = req.params;
 
-    const schemaToValidate = Joi.object(schema);
-    const { error, value } = schemaToValidate.validate(toValidate, validationOptions);
+    // Schema is already a Joi object, don't wrap it again
+    const { error, value } = schema.validate(toValidate, validationOptions);
 
     if (error) {
       const details = error.details.map(detail => ({
