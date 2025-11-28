@@ -7,8 +7,8 @@ class LabelRepository {
       VALUES (?, ?, ?, ?, ?)
     `;
     const result = await db.query(query, [tenantId, inboxId, name, color, createdBy]);
-    const [rows] = await db.query('SELECT * FROM labels WHERE id = ?', [result.rows.insertId]);
-    return rows[0];
+    const selectResult = await db.query('SELECT * FROM labels WHERE id = ?', [result.rows.insertId]);
+    return selectResult.rows[0];
   }
 
   async findById(id) {
