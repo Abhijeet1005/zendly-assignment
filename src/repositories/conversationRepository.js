@@ -69,7 +69,7 @@ class ConversationRepository {
     }
 
     query += ` LIMIT ? OFFSET ?`;
-    params.push(limit, offset);
+    params.push(Number(limit), Number(offset));
 
     const result = await db.query(query, params);
     return result.rows;
