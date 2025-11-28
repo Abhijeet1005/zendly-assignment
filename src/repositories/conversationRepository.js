@@ -69,7 +69,10 @@ class ConversationRepository {
     }
 
     query += ` LIMIT ? OFFSET ?`;
-    params.push(Number(limit), Number(offset));
+    // Ensure limit and offset are valid integers
+    const validLimit = parseInt(limit) || 100;
+    const validOffset = parseInt(offset) || 0;
+    params.push(validLimit, validOffset);
 
     const result = await db.query(query, params);
     return result.rows;
